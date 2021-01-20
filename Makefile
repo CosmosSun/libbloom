@@ -86,6 +86,9 @@ else
 OPT=-O3
 endif
 
+INSTALL_LIB_DIR=/usr/local/lib
+INSTALL_HEADER_DIR=/usr/local/include/bloom
+
 
 all: $(BUILD)/$(SO_VERSIONED) $(BUILD)/libbloom.a
 
@@ -123,6 +126,14 @@ $(BUILD)/murmurhash2.o: murmur2/MurmurHash2.c murmur2/murmurhash2.h
 
 clean:
 	rm -rf $(BUILD)
+
+install:
+	install -m 744 $(BUILD)/libbloom.a $(INSTALL_LIB_DIR)
+	install -m 744 $(BUILD)/$(SO_VERSIONED) $(INSTALL_LIB_DIR)
+	rm -rf $(INSTALL_HEADER_DIR)
+	mkdir $(INSTALL_HEADER_DIR)
+	install -m 644 bloom.h $(INSTALL_HEADER_DIR)
+        
 
 test: $(BUILD)/test-libbloom $(BUILD)/test-basic
 	$(BUILD)/test-basic
